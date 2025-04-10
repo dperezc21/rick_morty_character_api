@@ -1,8 +1,11 @@
 import {buildSchema} from 'graphql';
 import {createHandler} from 'graphql-http/lib/use/express';
 import express from 'express';
+import {validConnection} from "./database/connection";
 
 const { ruruHTML } = require('ruru/server');
+
+validConnection().then();
 
 // Construct a schema, using GraphQL schema language
 const schema = buildSchema(`type Query { hello: String } `);

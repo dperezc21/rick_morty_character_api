@@ -19,6 +19,8 @@
     "express": "^5.1.0",
     "graphql": "^16.10.0",
     "graphql-http": "^1.22.4",
-    "ruru": "^2.0.0-beta.22"
+    "mysql2": "^3.14.0",
+    "ruru": "^2.0.0-beta.22",
+    "sequelize": "^6.37.7"
   }
 }
