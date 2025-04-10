@@ -134,8 +134,7 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-<<<<<<< HEAD
-=======
 
 dist/
->>>>>>> e3db044 (feat: first commit)
+.idea
+
