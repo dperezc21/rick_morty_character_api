@@ -1,7 +1,7 @@
 
 
-export const filterByStatus = (status: string, page: number = 1): string => "{\n" +
-    `  characters(page: ${page}, filter: { status: \"${status}\"}) {\n` +
+export const filterByStatus = (status: string, key: string, page: number = 1): string => "{\n" +
+    `  characters(page: ${page}, filter: { ${CHOICE_FILTER.get(key)}: \"${status}\"}) {\n` +
     "    info { pages }"+
     "    results {\n" +
     "      id\n" +
@@ -15,3 +15,8 @@ export const filterByStatus = (status: string, page: number = 1): string => "{\n
     "    }\n" +
     "  }\n" +
     "}\n"
+
+const CHOICE_FILTER: Map<string, string> = new Map([
+    ["status", "status"],
+    ["species", "species"],
+])

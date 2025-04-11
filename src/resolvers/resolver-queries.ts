@@ -6,6 +6,9 @@ export const resolvers = {
     Query: {
         status: async(root, {status}) => {
             return characterController.getAllCharactersByStatus(status)
+        },
+        species: async(root, {specie}) => {
+            return characterController.getAllCharactersBySpecies(specie)
         }
     },
 };
