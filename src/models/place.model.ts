@@ -1,7 +1,7 @@
 import {sequelize} from "../database/connection";
 import {DataTypes} from "sequelize";
 
-export const Place = sequelize.define("Place", {
+export const PlaceModel = sequelize.define("Place", {
     id: {
         type: DataTypes.INTEGER,
         unique: true,

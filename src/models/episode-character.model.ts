@@ -1,20 +1,20 @@
 import {sequelize} from "../database/connection";
 import {DataTypes} from "sequelize";
-import {Episode} from "./episode.model";
-import {Character} from "./character.model";
+import {EpisodeModel} from "./episode.model";
+import {CharacterModel} from "./character.model";
 
-export const EpisodeCharacter = sequelize.define("EpisodeCharacter", {
+export const EpisodeCharacterModel = sequelize.define("EpisodeCharacter", {
     episode_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: Episode,
+            model: EpisodeModel,
             key: "id"
         }
     },
     character_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: Character,
+            model: CharacterModel,
             key: "id"
         }
     }

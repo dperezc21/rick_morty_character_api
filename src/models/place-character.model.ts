@@ -1,20 +1,20 @@
 import {sequelize} from "../database/connection";
 import {DataTypes} from "sequelize";
-import {Place} from "./place.model";
-import {Character} from "./character.model";
+import {PlaceModel} from "./place.model";
+import {CharacterModel} from "./character.model";
 
-export const PlaceCharacter = sequelize.define("PlaceCharacter", {
+export const PlaceCharacterModel = sequelize.define("PlaceCharacter", {
     place_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: Place,
+            model: PlaceModel,
             key: "id"
         }
     },
     character_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: Character,
+            model: CharacterModel,
             key: "id"
         }
     }
