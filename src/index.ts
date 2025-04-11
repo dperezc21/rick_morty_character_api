@@ -3,7 +3,7 @@ import {createTables} from "./database/create-tables";
 import {ApolloServer} from "@apollo/server";
 import {startStandaloneServer} from "@apollo/server/standalone";
 import {typeDefs} from "./constants/types-graphql";
-import {resolvers} from "./resolvers/resolver";
+import {resolvers} from "./resolvers/resolver-queries";
 
 validConnection().then();
 createTables().then();
