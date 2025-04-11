@@ -4,28 +4,24 @@ import {CacheRepository, NodeCacheService} from "./node-cache.service";
 const cacheService: CacheRepository<any> = new NodeCacheService();
 
 export class CharacterService {
-    getAllCharactersByStatus(status: string): any {
+    async getAllCharactersByStatus(status: string): Promise<any> {
         const charactersByStatus = cacheService.getValue(status);
-        if(charactersByStatus) return charactersByStatus;
-        Character.findAll({
-               where: { status }
-        }).then(async(value) => {
-           if(value.length) {
-               return value.map(value1 => value1.dataValues);
-           }
-           return await this.characterFromApi();
-        }).then(value => {
-            cacheService.setValue(status, value);
-            console.log(value)
-        });
-        console.log("log cache", cacheService.getValue(status))
-        return cacheService.getValue(status);
+        if(charactersByStatus) return JSON.parse(charactersByStatus);
+        const characters = await Character.findAll({ where: { status } });
+        if(characters.length) {
+            cacheService.setValue(status, characters.map(value1 => value1.dataValues));
+            return cacheService.getValue(status);
+        }
+        const charac = await this.characterFromApi(status);
+        if(characters) cacheService.setValue(status, charac);
+        return charac;
+
     }
 
-    async characterFromApi(): Promise<any> {
+    async characterFromApi(value: string): Promise<any> {
         try {
             return await fetch("https://rickandmortyapi.com/graphql?query={\n" +
-                "  characters(filter: { status: \"Alive\"}) {\n" +
+                `  characters(filter: { status: \"${value}\"}) {\n` +
                 "    results {\n" +
                 "      id\n" +
                 "      name\n" +
