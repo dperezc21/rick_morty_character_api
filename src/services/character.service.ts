@@ -1,7 +1,9 @@
 import {Character} from "../models/character.model";
 import {CacheRepository, NodeCacheService} from "./node-cache.service";
+import {RickMortyGraphqlService} from "./rick-morty-graphql.service";
 
 const cacheService: CacheRepository<any> = new NodeCacheService();
+const rickMortyGraphqlService = new RickMortyGraphqlService();
 
 export class CharacterService {
     async getAllCharactersByStatus(status: string): Promise<any> {
@@ -12,37 +14,9 @@ export class CharacterService {
             cacheService.setValue(status, characters.map(value1 => value1.dataValues));
             return cacheService.getValue(status);
         }
-        const charac = await this.characterFromApi(status);
-        if(characters) cacheService.setValue(status, charac);
-        return charac;
+        const characterByStatus = await rickMortyGraphqlService.characterByStatus(status);
+        if(characterByStatus) cacheService.setValue(status, characterByStatus);
+        return characterByStatus;
 
-    }
-
-    async characterFromApi(value: string): Promise<any> {
-        try {
-            return await fetch("https://rickandmortyapi.com/graphql?query={\n" +
-                `  characters(filter: { status: \"${value}\"}) {\n` +
-                "    results {\n" +
-                "      id\n" +
-                "      name\n" +
-                "      status\n" +
-                "      species\n" +
-                "      type\n" +
-                "      gender\n" +
-                "      image\n" +
-                "      created\n" +
-                "    }\n" +
-                "  }\n" +
-                "}\n", {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Accept": 'application/json',
-                },
-            }).then(value => value.json())
-                .then(value => value["data"]["characters"]["results"])
-        } catch (error) {
-
-        }
     }
 }
