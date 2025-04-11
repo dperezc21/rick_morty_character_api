@@ -26,6 +26,7 @@ const Queries: string = `
         status(status: String!): [Character]
         species(specie: String!): [Character]
         gender(gender: String!): [Character]
+        name(name: String!): [Character]
     }
 `;
 

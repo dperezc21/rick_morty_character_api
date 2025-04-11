@@ -12,6 +12,9 @@ export const resolvers = {
         },
         gender: async(root, {gender}) => {
             return characterController.getAllCharactersByGender(gender)
+        },
+        name: async(root, {name}) => {
+            return characterController.getAllCharactersByName(name)
         }
     },
 };

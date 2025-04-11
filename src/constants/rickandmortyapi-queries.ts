@@ -20,4 +20,5 @@ const CHOICE_FILTER: Map<string, string> = new Map([
     ["status", "status"],
     ["species", "species"],
     ["gender", "gender"],
+    ["name", "name"],
 ])
