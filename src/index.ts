@@ -2,55 +2,11 @@ import {validConnection} from "./database/connection";
 import {createTables} from "./database/create-tables";
 import {ApolloServer} from "@apollo/server";
 import {startStandaloneServer} from "@apollo/server/standalone";
-import {CharacterController} from "./controllers/character.controller";
-
-const characterController = new CharacterController();
+import {typeDefs} from "./constants/types-graphql";
+import {resolvers} from "./resolvers/resolver";
 
 validConnection().then();
-
 createTables().then();
-
-const EpisodeType: string = `
-    type Episode {
-        id: Int!
-        name: String!
-        air_date: String!
-        episode: String!
-    }
-`;
-const CharacterType: string = `
-    type Character {
-        id: Int!
-        name: String!
-        status: String!
-        species: String
-        type: String
-        gender: String
-        image: String
-        created: String
-        episode: [Episode]
-    }
-`;
-
-const Queries: string = `
-    type Query {
-        status(status: String!): [Character]
-    }
-`;
-
-const typeDefs: string = `#graphql
-    ${CharacterType}
-    ${EpisodeType}
-    ${Queries}
-`;
-
-const resolvers = {
-    Query: {
-        status: async(root, {status}) => {
-            return characterController.getAllCharactersByStatus(status)
-        }
-    },
-};
 
 const server = new ApolloServer({
     typeDefs,
