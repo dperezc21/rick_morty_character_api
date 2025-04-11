@@ -1,10 +1,10 @@
 import {validConnection} from "./database/connection";
 import {createTables} from "./database/create-tables";
-import {CharacterService} from "./services/character.service";
 import {ApolloServer} from "@apollo/server";
 import {startStandaloneServer} from "@apollo/server/standalone";
+import {CharacterController} from "./controllers/character.controller";
 
-const characterService = new CharacterService();
+const characterController = new CharacterController();
 
 validConnection().then();
 
@@ -47,7 +47,7 @@ const typeDefs: string = `#graphql
 const resolvers = {
     Query: {
         status: async(root, {status}) => {
-            return characterService.getAllCharactersByStatus(status)
+            return characterController.getAllCharactersByStatus(status)
         }
     },
 };
