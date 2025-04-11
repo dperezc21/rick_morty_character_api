@@ -1,7 +1,8 @@
 
 
-export const filterByStatus = (status: string): string => "{\n" +
-    `  characters(page: 2, filter: { status: \"${status}\"}) {\n` +
+export const filterByStatus = (status: string, page: number = 1): string => "{\n" +
+    `  characters(page: ${page}, filter: { status: \"${status}\"}) {\n` +
+    "    info { pages }"+
     "    results {\n" +
     "      id\n" +
     "      name\n" +
