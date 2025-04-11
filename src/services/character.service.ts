@@ -7,7 +7,7 @@ const cacheService: CacheRepository<any> = new NodeCacheService();
 export class CharacterService {
 
     async charactersByStatus(status: string): Promise<Character[]> {
-        return new Promise(async(resolve, reject) => {
+        return new Promise(async(resolve) => {
             const charactersFound = await CharacterModel.findAll({ where: { status } });
             if(charactersFound.length) {
                 const mapCharacters = charactersFound.map(value1 => value1.dataValues);
@@ -19,7 +19,7 @@ export class CharacterService {
     }
 
     async charactersBySpecie(species: string): Promise<Character[]> {
-        return new Promise(async(resolve, reject) => {
+        return new Promise(async(resolve) => {
             const charactersFound = await CharacterModel.findAll({ where: { species } });
             if(charactersFound.length) {
                 const mapCharacters = charactersFound.map(value1 => value1.dataValues);

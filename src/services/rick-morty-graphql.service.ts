@@ -1,6 +1,6 @@
 import {filterByStatus} from "../constants/rickandmortyapi-queries";
 import {CacheRepository, NodeCacheService} from "./node-cache.service";
-import {Character, CharacterResponse, InfoResponse} from "../interfaces/character-response";
+import {Character, CharacterResponse} from "../interfaces/character-response";
 
 const cacheService: CacheRepository<any> = new NodeCacheService();
 
