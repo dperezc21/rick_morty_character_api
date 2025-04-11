@@ -19,4 +19,5 @@ export const filterByStatus = (status: string, key: string, page: number = 1): s
 const CHOICE_FILTER: Map<string, string> = new Map([
     ["status", "status"],
     ["species", "species"],
+    ["gender", "gender"],
 ])

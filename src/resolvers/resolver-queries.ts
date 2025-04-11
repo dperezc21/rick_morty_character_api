@@ -9,6 +9,9 @@ export const resolvers = {
         },
         species: async(root, {specie}) => {
             return characterController.getAllCharactersBySpecies(specie)
+        },
+        gender: async(root, {gender}) => {
+            return characterController.getAllCharactersByGender(gender)
         }
     },
 };

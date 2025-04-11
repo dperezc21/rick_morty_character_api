@@ -29,4 +29,16 @@ export class CharacterService {
             resolve([]);
         })
     }
+
+    async charactersByGender(gender: string): Promise<Character[]> {
+        return new Promise(async(resolve) => {
+            const charactersFound = await CharacterModel.findAll({ where: { gender } });
+            if(charactersFound.length) {
+                const mapCharacters = charactersFound.map(value1 => value1.dataValues);
+                cacheService.setValue(gender, mapCharacters);
+                resolve(mapCharacters);
+            }
+            resolve([]);
+        })
+    }
 }

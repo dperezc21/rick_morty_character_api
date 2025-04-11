@@ -23,4 +23,12 @@ export class CharacterController {
         if(characters.length) return characters;
         return await rickMortyGraphqlService.getAllCharacterByFilter(specie, "species");
     }
+
+    async getAllCharactersByGender(gender: string): Promise<Character[]> {
+        const charactersBySpecie = cacheService.getValue(gender);
+        if(charactersBySpecie) return JSON.parse(charactersBySpecie);
+        const characters: Character[] = await characterService.charactersByGender(gender);
+        if(characters.length) return characters;
+        return await rickMortyGraphqlService.getAllCharacterByFilter(gender, "gender");
+    }
 }
