@@ -1,6 +1,6 @@
 import {Sequelize} from "sequelize";
 
-export class DbConnection {
+class DbConnection {
     private static sequelize: Sequelize;
     public constructor() {
         if(DbConnection.sequelize == null) {
@@ -25,7 +25,9 @@ export class DbConnection {
         }
     }
 
-    static getConnection(): Sequelize {
+    getConnection(): Sequelize {
         return DbConnection.sequelize;
     }
 }
+
+export default new DbConnection();
