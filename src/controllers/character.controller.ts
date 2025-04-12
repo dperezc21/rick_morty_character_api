@@ -1,7 +1,7 @@
 import {RickMortyGraphqlService} from "../services/rick-morty-graphql.service";
 import {CacheRepository, NodeCacheService} from "../services/node-cache.service";
 import {CharacterService} from "../services/character.service";
-import {Character} from "../interfaces/character-response";
+import {Character} from "../interfaces/character.interface";
 
 const cacheService: CacheRepository<any> = new NodeCacheService();
 const characterService = new CharacterService();

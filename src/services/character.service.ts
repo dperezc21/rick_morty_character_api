@@ -1,6 +1,6 @@
 import {CharacterModel} from "../models/character.model";
 import {CacheRepository, NodeCacheService} from "./node-cache.service";
-import {Character} from "../interfaces/character-response";
+import {Character} from "../interfaces/character.interface";
 
 const cacheService: CacheRepository<any> = new NodeCacheService();
 
