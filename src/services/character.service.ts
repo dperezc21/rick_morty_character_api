@@ -1,58 +1,29 @@
 import {CharacterModel} from "../models/character.model";
-import {CacheRepository, NodeCacheService} from "./node-cache.service";
 import {Character} from "../interfaces/character.interface";
-
-const cacheService: CacheRepository<any> = new NodeCacheService();
 
 export class CharacterService {
 
-    async charactersByStatus(status: string): Promise<Character[]> {
-        return new Promise(async(resolve) => {
-            const charactersFound = await CharacterModel.findAll({ where: { status } });
-            if(charactersFound.length) {
-                const mapCharacters = charactersFound.map(value1 => value1.dataValues);
-                cacheService.setValue(status, mapCharacters);
-                resolve(mapCharacters);
-            }
-            resolve([]);
-        })
+    async getCharacterByName(name: string): Promise<Character[]> {
+        return await CharacterModel.findAll(
+            { where: { name } })
+            .then(modelValue => modelValue.map(model => model.dataValues));
     }
 
-    async charactersBySpecie(species: string): Promise<Character[]> {
-        return new Promise(async(resolve) => {
-            const charactersFound = await CharacterModel.findAll({ where: { species } });
-            if(charactersFound.length) {
-                const mapCharacters = charactersFound.map(value1 => value1.dataValues);
-                cacheService.setValue(species, mapCharacters);
-                resolve(mapCharacters);
-            }
-            resolve([]);
-        })
+    async getCharacterByStatus(status: string): Promise<Character[]> {
+        return await CharacterModel.findAll(
+            { where: { status } })
+            .then(modelValue => modelValue.map(model => model.dataValues));
     }
 
-    async charactersByGender(gender: string): Promise<Character[]> {
-        return new Promise(async(resolve) => {
-            const charactersFound = await CharacterModel.findAll({ where: { gender } });
-            if(charactersFound.length) {
-                const mapCharacters = charactersFound.map(value1 => value1.dataValues);
-                cacheService.setValue(gender, mapCharacters);
-                resolve(mapCharacters);
-            }
-            resolve([]);
-        })
+    async getCharacterBySpecie(species: string) {
+        return await CharacterModel.findAll(
+            { where: { species } })
+            .then(modelValue => modelValue.map(model => model.dataValues));
     }
 
-    async charactersByName(name: string): Promise<Character[]> {
-        return new Promise(async(resolve) => {
-            const charactersFound = await CharacterModel.findAll(
-                { where: { name } });
-            if(charactersFound.length) {
-                const mapCharacters = charactersFound.map(value1 => value1.dataValues);
-                cacheService.setValue(name, mapCharacters);
-                resolve(mapCharacters);
-            }
-            resolve([]);
-        })
+    async getCharacterByGender(gender: string) {
+        return await CharacterModel.findAll({ where: { gender } })
+            .then(modelValue => modelValue.map(model => model.dataValues));
     }
 
     async saveCharacter({ id, episode, origin, ...value }: Character): Promise<Character> {

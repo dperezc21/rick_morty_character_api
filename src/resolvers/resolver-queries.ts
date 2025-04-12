@@ -5,16 +5,16 @@ const characterController = new CharacterController();
 export const resolvers = {
     Query: {
         status: async(root, {status}) => {
-            return characterController.getAllCharactersByStatus(status)
+            return characterController.getAllCharacters(status, "status")
         },
         species: async(root, {specie}) => {
-            return characterController.getAllCharactersBySpecies(specie)
+            return characterController.getAllCharacters(specie, "species")
         },
         gender: async(root, {gender}) => {
-            return characterController.getAllCharactersByGender(gender)
+            return characterController.getAllCharacters(gender, "gender")
         },
         name: async(root, {name}) => {
-            return characterController.getAllCharactersByName(name)
+            return characterController.getAllCharacters(name, "name")
         }
     },
 };
