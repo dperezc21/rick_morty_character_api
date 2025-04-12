@@ -19,7 +19,7 @@ export class CharacterController {
         const characters: Character[] = await CHOICE_BY_FILTER[type].getCharacters(filter);
         if(characters.length) return characters;
         const charactersFiltered: Character[] = await rickMortyGraphqlService.getAllCharacterByFilter(filter, type);
-        if(charactersFiltered?.length) await this.saveCharacterData(characters);
+        if(charactersFiltered?.length) await this.saveCharacterData(charactersFiltered);
         return charactersFiltered;
     }
 
