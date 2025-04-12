@@ -21,6 +21,16 @@ const CharacterType: string = `
     }
 `;
 
+const Place: string = `
+    type Origin {
+        id: String!
+        name: String!
+        dimension: String
+        created: String
+        type: String
+    }
+`
+
 const Queries: string = `
     type Query {
         status(status: String!): [Character]
@@ -34,4 +44,5 @@ export const typeDefs: string = `#graphql
     ${CharacterType}
     ${EpisodeType}
     ${Queries}
+    ${Place}
 `;
