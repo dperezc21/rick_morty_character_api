@@ -1,4 +1,4 @@
-import {defaultQuery, filterByStatus} from "../constants/rickandmortyapi-queries";
+import {defaultCharacterQuery, queryToFilterCharacters} from "../constants/rickandmortyapi-queries";
 import {CacheRepository, NodeCacheService} from "./node-cache.service";
 import {Character, CharacterResponse} from "../interfaces/character-response";
 
@@ -15,14 +15,14 @@ export class RickMortyGraphqlService {
     }
 
     async getCharacterInitial(): Promise<CharacterResponse> {
-        return await fetch(`${this.url}?query=${defaultQuery}`, {
+        return await fetch(`${this.url}?query=${defaultCharacterQuery()}`, {
                 method: "GET",
                 headers: this.headers()
             }).then(value => value.json()).then(value1 => value1["data"]["characters"])
     }
 
     async getCharactersFiltered(value: string, key: string, page: number = 1): Promise<CharacterResponse> {
-        return await fetch(`${this.url}?query=${filterByStatus(value, key, page)}`, {
+        return await fetch(`${this.url}?query=${queryToFilterCharacters(value, key, page)}`, {
             method: "GET",
             headers: this.headers(),
         }).then(value => value.json()).then(value1 => value1["data"]["characters"]);

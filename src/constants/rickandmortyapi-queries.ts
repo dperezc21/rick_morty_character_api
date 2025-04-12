@@ -1,23 +1,10 @@
 
 
-export const filterByStatus = (status: string, key: string, page: number = 1): string => "{\n" +
-    `  characters(page: ${page}, filter: { ${CHOICE_FILTER.get(key)}: \"${status}\"}) {\n` +
-    "    info { pages }"+
-    "    results {\n" +
-    "      id\n" +
-    "      name\n" +
-    "      status\n" +
-    "      species\n" +
-    "      type\n" +
-    "      gender\n" +
-    "      image\n" +
-    "      created\n" +
-    "    }\n" +
-    "  }\n" +
-    "}\n"
+export const queryToFilterCharacters = (status: string, key: string, page: number = 1): string =>
+    defaultCharacterQuery(`(page: ${page}, filter: { ${CHOICE_FILTER.get(key)}: \"${status}\"})`)
 
-export const defaultQuery: string = "{\n" +
-    "  characters {\n" +
+export const defaultCharacterQuery = (filter: string = ""): string => "{\n" +
+    `  characters${filter} {\n` +
     "    results {\n" +
     "      id\n" +
     "      name\n" +
