@@ -1,9 +1,7 @@
-
-
-import {sequelize} from "../database/connection";
 import {DataTypes} from "sequelize";
+import db from "../database/db-connection";
 
-export const EpisodeModel = sequelize.define("Episode", {
+export const EpisodeModel = db.getConnection().define("Episode", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

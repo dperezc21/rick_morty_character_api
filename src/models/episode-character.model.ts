@@ -1,9 +1,9 @@
-import {sequelize} from "../database/connection";
 import {DataTypes} from "sequelize";
 import {EpisodeModel} from "./episode.model";
 import {CharacterModel} from "./character.model";
+import db from "../database/db-connection";
 
-export const EpisodeCharacterModel = sequelize.define("EpisodeCharacter", {
+export const EpisodeCharacterModel = db.getConnection().define("EpisodeCharacter", {
     episode_id: {
         type: DataTypes.INTEGER,
         references: {

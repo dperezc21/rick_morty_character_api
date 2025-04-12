@@ -1,17 +1,13 @@
-import {validConnection} from "./database/connection";
-import {createTables} from "./database/create-tables";
+
 import {ApolloServer} from "@apollo/server";
 import {startStandaloneServer} from "@apollo/server/standalone";
+import db from "./database/db-connection";
+import {createTables} from "./database/create-tables";
 import {typeDefs} from "./constants/types-graphql";
 import {resolvers} from "./resolvers/resolver-queries";
-import {PopulationInitialDb} from "./database/population-initial-db";
 
-const populationInitialDb = new PopulationInitialDb()
-
-validConnection().then();
+db.validConnection().then();
 createTables().then();
-
-populationInitialDb.populationInitial().then(console.log);
 
 const server = new ApolloServer({
     typeDefs,

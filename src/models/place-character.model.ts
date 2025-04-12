@@ -1,9 +1,9 @@
-import {sequelize} from "../database/connection";
 import {DataTypes} from "sequelize";
 import {PlaceModel} from "./place.model";
 import {CharacterModel} from "./character.model";
+import db from "../database/db-connection";
 
-export const PlaceCharacterModel = sequelize.define("PlaceCharacter", {
+export const PlaceCharacterModel = db.getConnection().define("PlaceCharacter", {
     place_id: {
         type: DataTypes.INTEGER,
         references: {

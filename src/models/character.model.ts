@@ -1,7 +1,7 @@
-import {sequelize} from "../database/connection";
 import {DataTypes} from "sequelize";
+import db from "../database/db-connection";
 
-export const CharacterModel = sequelize.define("Character", {
+export const CharacterModel = db.getConnection().define("Character", {
     id: {
         type: DataTypes.INTEGER,
         unique: true,
