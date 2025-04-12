@@ -4,9 +4,14 @@ import {ApolloServer} from "@apollo/server";
 import {startStandaloneServer} from "@apollo/server/standalone";
 import {typeDefs} from "./constants/types-graphql";
 import {resolvers} from "./resolvers/resolver-queries";
+import {PopulationInitialDb} from "./database/population-initial-db";
+
+const populationInitialDb = new PopulationInitialDb()
 
 validConnection().then();
 createTables().then();
+
+populationInitialDb.populationInitial().then(console.log);
 
 const server = new ApolloServer({
     typeDefs,

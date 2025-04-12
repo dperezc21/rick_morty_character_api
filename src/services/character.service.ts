@@ -54,4 +54,15 @@ export class CharacterService {
             resolve([]);
         })
     }
+
+    async saveCharacter({ id, ...value }: Character): Promise<Character> {
+        return await CharacterModel.findOrCreate({
+            where: {id},
+            defaults: {...value, id}
+        }).then(value1 => value1[0].dataValues)
+    }
+
+    async existRecords(): Promise<number> {
+        return await CharacterModel.count()
+    }
 }
