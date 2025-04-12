@@ -1,4 +1,5 @@
 import {Episode} from "./episode.interface";
+import {Origin} from "./origin.interface";
 
 export interface Character {
     id: number,
@@ -10,4 +11,5 @@ export interface Character {
     image: string
     created: string
     episode: Episode[]
+    origin: Origin
 }

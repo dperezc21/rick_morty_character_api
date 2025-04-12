@@ -55,7 +55,7 @@ export class CharacterService {
         })
     }
 
-    async saveCharacter({ id, ...value }: Character): Promise<Character> {
+    async saveCharacter({ id, episode, origin, ...value }: Character): Promise<Character> {
         return await CharacterModel.findOrCreate({
             where: {id},
             defaults: {...value, id}
