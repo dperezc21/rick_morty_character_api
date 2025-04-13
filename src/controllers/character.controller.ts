@@ -1,15 +1,13 @@
-import {RickMortyGraphqlService} from "../services/rick-morty-graphql.service";
 import {CacheRepository, NodeCacheService} from "../services/node-cache.service";
-import {
-    CharacterService,
-} from "../services/character.service";
+import {CharacterService,} from "../services/character.service";
 import {Character} from "../interfaces/character.interface";
 import {OriginService} from "../services/origin.service";
 import {CHOICE_BY_FILTER} from "../services/character-strategy.service";
+import {RickMortyApiController} from "./rick-morty-api.controller";
 
 const cacheService: CacheRepository<any> = new NodeCacheService();
 const characterService = new CharacterService();
-const rickMortyGraphqlService = new RickMortyGraphqlService();
+const rickMortyApiController = new RickMortyApiController();
 const originService = new OriginService();
 
 export class CharacterController {
@@ -18,7 +16,7 @@ export class CharacterController {
         if(charactersByStatus) return JSON.parse(charactersByStatus);
         const characters: Character[] = await CHOICE_BY_FILTER[type].getCharacters(filter);
         if(characters.length) return characters;
-        const charactersFiltered: Character[] = await rickMortyGraphqlService.getAllCharacterByFilter(filter, type);
+        const charactersFiltered: Character[] = await rickMortyApiController.getAllCharacterByFilter(filter, type);
         if(charactersFiltered?.length) await this.saveCharacterData(charactersFiltered);
         return charactersFiltered;
     }
@@ -28,7 +26,7 @@ export class CharacterController {
         if(charactersByStatus) return JSON.parse(charactersByStatus);
         const characters: Character[] = await CHOICE_BY_FILTER[type].getCharacters(filter);
         if(characters.length) return characters;
-        const charactersFiltered: Character[] = await rickMortyGraphqlService.getAllCharacterByOriginName(filter, type);
+        const charactersFiltered: Character[] = await rickMortyApiController.getAllCharacterByOriginName(filter, type);
         if(charactersFiltered?.length) await this.saveCharacterData(charactersFiltered);
         return charactersFiltered;
     }

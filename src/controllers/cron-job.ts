@@ -1,12 +1,12 @@
 import cron from 'node-cron';
-import {RickMortyGraphqlService} from "../services/rick-morty-graphql.service";
 import {CharacterService} from "../services/character.service";
 import {Character} from "../interfaces/character.interface";
+import {RickMortyApiController} from "./rick-morty-api.controller";
 
-const rickMortyGraph = new RickMortyGraphqlService();
+const rickMortyGraph = new RickMortyApiController();
 const characterService = new CharacterService();
 
-function validSameCharacters(character: Character, characterToUpdate: Character): boolean {
+function isSameCharacter(character: Character, characterToUpdate: Character): boolean {
     for (let key in characterToUpdate) {
         if(!(key in character) || key == "created") continue;
         if(character[key] != characterToUpdate[key]) return false;
@@ -24,7 +24,7 @@ async function updateCharactersModified(): Promise<void> {
         const charactersApi: Character[] = await rickMortyGraph.getAllCharacters();
         for (const character of characters) {
             const found: Character = getCharacter(charactersApi, character);
-            if(validSameCharacters(character, found)) continue;
+            if(isSameCharacter(character, found)) continue;
             await characterService.updateCharacter(found);
         }
         resolve()
@@ -33,5 +33,6 @@ async function updateCharactersModified(): Promise<void> {
 
 const expJob: string = "0 1,13 * * 1-7";
 export const job = cron.schedule(expJob, () => {
+    console.log("cron job running");
     updateCharactersModified().then();
 });
