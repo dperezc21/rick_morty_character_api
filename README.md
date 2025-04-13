@@ -23,3 +23,24 @@ and uses a MySQL database for efficient storage, with Sequelize as the ORM.
 - **Sequelize** - ORM for Node.js compatible with MySQL.
 - **MySQL** - Relational database management system.
 - **Node Cache** - Tool for in-memory cache management.
+
+
+## ⚙️ setting
+
+1. Clone repository:
+   ```
+   git clone https://github.com/dperezc21/rick_morty_character_api.git
+   cd rick_morty_character_api
+   ```
+
+2. Install dependencies 
+   ```
+    npm install
+   ```
+
+3. run project
+   ```
+   npm run start
+   ```
+
+
