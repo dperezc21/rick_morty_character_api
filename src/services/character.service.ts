@@ -36,4 +36,20 @@ export class CharacterService {
     async existRecords(): Promise<number> {
         return await CharacterModel.count()
     }
+
+    async getAllCharacters(): Promise<Character[]> {
+        return new Promise(async(resolve) => {
+           const hola = await CharacterModel.findAll()//.then(value => value.map(value1 => value1.dataValues));
+            resolve(hola.map(value => value.dataValues))
+        });
+    }
+
+    async updateCharacter({id, episode, origin, ...value}: Character) {
+        return new Promise(async(resolve) => {
+            const characterUpdated = await CharacterModel.update(
+                { ...value, id },
+                {where: { id }})
+            resolve(characterUpdated[0] > 0)
+        });
+    }
 }

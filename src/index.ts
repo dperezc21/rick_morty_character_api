@@ -5,6 +5,9 @@ import db from "./database/db-connection";
 import {createTables} from "./database/create-tables";
 import {typeDefs} from "./constants/types-graphql";
 import {resolvers} from "./resolvers/resolver-queries";
+import {job} from "./controllers/cron-job";
+
+job.start();
 
 db.validConnection().then();
 createTables().then();

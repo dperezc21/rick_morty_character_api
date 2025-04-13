@@ -1,7 +1,7 @@
 import {
     defaultCharacterQuery,
     queryToFilterCharacters,
-    queryToFilterLocations
+    queryToFilterLocations, queryWithPagination
 } from "../constants/rickandmortyapi-queries";
 import {CacheRepository, NodeCacheService} from "./node-cache.service";
 import {CharacterResponse, OriginResponse} from "../interfaces/character-response";
@@ -39,6 +39,13 @@ export class RickMortyGraphqlService {
             method: "GET",
             headers: this.headers(),
         }).then(value => value.json()).then(value1 => value1["data"]["locations"]);
+    }
+
+    async getCharacters(page: number = 1): Promise<CharacterResponse> {
+        return await fetch(`${this.url}?query=${queryWithPagination(page)}`, {
+            method: "GET",
+            headers: this.headers(),
+        }).then(value => value.json()).then(value1 => value1["data"]["characters"]);
     }
 
     async getAllCharacterByFilter(value: string, key: string): Promise<Character[]> {
@@ -83,6 +90,24 @@ export class RickMortyGraphqlService {
             }
             if(characters?.length) cacheService.setValue(value, characters);
             return characters.map((value1: Origin) => value1["residents"]);
+        } catch (error) {
+            console.log("error", error)
+        }
+        return [];
+    }
+
+    async getAllCharacters(): Promise<Character[]> {
+        try {
+            let characters: Character[] = [];
+            const characterResponse: CharacterResponse = await this.getCharacters();
+            characters = characterResponse.results;
+            if(!characters?.length) return [];
+            if(!characterResponse?.info?.pages) return characters;
+            for (let page: number = 2; page <= characterResponse.info.pages; page++) {
+                const characterNext: CharacterResponse = await this.getCharacters(page);
+                if (characterNext?.results?.length) characterNext?.results.forEach((value1: Character) => characters.push(value1));
+            }
+            return characters;
         } catch (error) {
             console.log("error", error)
         }
