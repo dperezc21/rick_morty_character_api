@@ -39,6 +39,7 @@ export const defaultLocationQuery = (filter: string = ""): string => "{\n" +
     "      type\n" +
     "      dimension\n" +
     "      created\n" +
+    `      ${RESIDENTS}`+
     "    }\n" +
     "  }\n" +
     "}"

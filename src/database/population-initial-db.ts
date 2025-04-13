@@ -2,6 +2,7 @@ import {CharacterService} from "../services/character.service";
 import {RickMortyGraphqlService} from "../services/rick-morty-graphql.service";
 import {CharacterResponse} from "../interfaces/character-response";
 import {CharacterController} from "../controllers/character.controller";
+import {CHARACTER_NUMBER_MIN} from "../constants/constants";
 
 const characterService = new CharacterService();
 const rickMortyGraphqlService = new RickMortyGraphqlService();
@@ -18,7 +19,7 @@ export class PopulationInitialDb {
             }
             const charactersToSave: CharacterResponse = await rickMortyGraphqlService.getCharacterInitial();
             if(!charactersToSave?.results?.length) return;
-            await characterController.saveCharacterData(charactersToSave.results);
+            await characterController.saveCharacterData(charactersToSave.results.slice(0, CHARACTER_NUMBER_MIN));
             return resolve("records saved");
         });
     }

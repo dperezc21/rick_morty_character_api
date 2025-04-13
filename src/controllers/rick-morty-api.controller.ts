@@ -32,25 +32,25 @@ export class RickMortyApiController {
         return [];
     }
 
-    async getAllCharacterByOriginName(value: string, key: string): Promise<Character[]> {
+    async getAllCharacterByOriginName(value: string): Promise<Character[]> {
         try {
-            let characters: Origin[] = [];
-            const originResponse: OriginResponse = await rickMortyService.getLocationsFiltered(value, key);
-            characters = originResponse.results;
-            if(!characters?.length) return [];
-            if(!originResponse?.info?.pages) {
+            let characters: Character[] = [];
+            const originResponse: OriginResponse = await rickMortyService.getLocationsFiltered(value, "name");
+            characters = originResponse?.results?.flatMap(value1 => value1["residents"]) ?? [];
+            if(!originResponse?.info?.pages || originResponse.info?.pages == 1) {
                 cacheService.setValue(value, characters);
-                return characters.map(value1 => value1["residents"]);
+                return characters;
             }
 
             for (let page: number = 2; page <= originResponse.info.pages; page++) {
-                const characterNext: OriginResponse = await rickMortyService.getLocationsFiltered(value, key, page);
-                if (characterNext?.results?.length) characterNext?.results.forEach((value1: Origin) => {
-                    value1["residents"].forEach((value2: Origin) => characters.push(value2));
-                });
+                const characterNext: OriginResponse = await rickMortyService.getLocationsFiltered(value, "name", page);
+                if (characterNext?.results?.length) {
+                    const residentCharacters: Character[] = characterNext.results?.flatMap((origin: Origin) => origin["residents"]);
+                    residentCharacters.forEach((value1: Character) => characters.push(value1));
+                }
             }
             if(characters?.length) cacheService.setValue(value, characters);
-            return characters.map((value1: Origin) => value1["residents"]);
+            return characters;
         } catch (error) {
             console.log("error", error)
         }

@@ -2,6 +2,7 @@ import cron from 'node-cron';
 import {CharacterService} from "../services/character.service";
 import {Character} from "../interfaces/character.interface";
 import {RickMortyApiController} from "./rick-morty-api.controller";
+import {REGEX_CRON_EACH_12_HOURS} from "../constants/constants";
 
 const rickMortyGraph = new RickMortyApiController();
 const characterService = new CharacterService();
@@ -31,8 +32,7 @@ async function updateCharactersModified(): Promise<void> {
     })
 }
 
-const expJob: string = "0 1,13 * * 1-7";
-export const job = cron.schedule(expJob, () => {
+export const job = cron.schedule(REGEX_CRON_EACH_12_HOURS, () => {
     console.log("cron job running");
     updateCharactersModified().then();
 });
