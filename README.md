@@ -42,5 +42,8 @@ and uses a MySQL database for efficient storage, with Sequelize as the ORM.
    ```
    npm run start
    ```
+   
+### Entity-Relationship Model
+![img.png](img.png)
 
 
