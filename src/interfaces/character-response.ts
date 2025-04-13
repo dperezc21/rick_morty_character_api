@@ -1,9 +1,14 @@
 import {Character} from "./character.interface";
+import {Origin} from "./origin.interface";
 
-export interface CharacterResponse {
+export interface GenericResponseApi<T> {
     info: InfoResponse,
-    results: Character[]
+    results: T[]
 }
+
+export interface CharacterResponse extends GenericResponseApi<Character>{}
+
+export interface OriginResponse extends GenericResponseApi<Origin>{}
 
 export interface InfoResponse {
     pages: number,

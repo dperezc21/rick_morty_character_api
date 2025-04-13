@@ -15,13 +15,13 @@ export class CharacterService {
             .then(modelValue => modelValue.map(model => model.dataValues));
     }
 
-    async getCharacterBySpecie(species: string) {
+    async getCharacterBySpecie(species: string): Promise<Character[]> {
         return await CharacterModel.findAll(
             { where: { species } })
             .then(modelValue => modelValue.map(model => model.dataValues));
     }
 
-    async getCharacterByGender(gender: string) {
+    async getCharacterByGender(gender: string): Promise<Character[]> {
         return await CharacterModel.findAll({ where: { gender } })
             .then(modelValue => modelValue.map(model => model.dataValues));
     }

@@ -23,6 +23,16 @@ export class CharacterController {
         return charactersFiltered;
     }
 
+    async getAllCharactersByOrigin(filter: string, type: string): Promise<any> {
+        const charactersByStatus = cacheService.getValue(filter);
+        if(charactersByStatus) return JSON.parse(charactersByStatus);
+        const characters: Character[] = await CHOICE_BY_FILTER[type].getCharacters(filter);
+        if(characters.length) return characters;
+        const charactersFiltered: Character[] = await rickMortyGraphqlService.getAllCharacterByOriginName(filter, type);
+        if(charactersFiltered?.length) await this.saveCharacterData(charactersFiltered);
+        return charactersFiltered;
+    }
+
     async saveCharacterData(characters: Character[]): Promise<boolean> {
         for (const charactersToSaveElement of characters.slice(0, 15)) {
             const characterSaved = await characterService.saveCharacter(charactersToSaveElement);

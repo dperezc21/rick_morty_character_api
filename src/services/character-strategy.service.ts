@@ -2,9 +2,12 @@ import {CharacterStrategy} from "../interfaces/character-strategy";
 import {Character} from "../interfaces/character.interface";
 import {CharacterService} from "./character.service";
 import {CacheRepository, NodeCacheService} from "./node-cache.service";
+import {OriginService} from "./origin.service";
+import {Origin} from "../interfaces/origin.interface";
 
 const cacheService: CacheRepository<any> = new NodeCacheService();
 const characterService = new CharacterService();
+const originService = new OriginService();
 
 export class CharacterSpecie implements CharacterStrategy {
     async getCharacters(type: string): Promise<Character[]> {
@@ -54,9 +57,24 @@ export class CharacterName implements CharacterStrategy {
     }
 }
 
+export class CharacterOrigin implements CharacterStrategy {
+    async getCharacters(name: string): Promise<Character[]> {
+        return new Promise(async(resolve) => {
+            const originsFound: Origin[] = await originService.getOriginsByName(name);
+            const characters: any[] = originsFound.flatMap(value => value["Characters"])
+            const c: Character[] = characters.map(value => value.dataValues);
+            if(c?.length) {
+                cacheService.setValue(name, c);
+                resolve(c);
+            } else resolve([]);
+        })
+    }
+}
+
 export const CHOICE_BY_FILTER = {
     "status": new CharacterStatus,
     "species": new CharacterSpecie,
     "name": new CharacterName,
-    "gender": new CharacterGender
+    "gender": new CharacterGender,
+    "origin": new CharacterOrigin,
 }

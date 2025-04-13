@@ -4,7 +4,13 @@ import {CharacterModel} from "./character.model";
 import db from "../database/db-connection";
 
 export const PlaceCharacterModel = db.getConnection().define("PlaceCharacter", {
-    place_id: {
+    /*id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        unique: true,
+        autoIncrement: true
+    },*/
+    /*place_id: {
         type: DataTypes.INTEGER,
         references: {
             model: PlaceModel,
@@ -17,5 +23,8 @@ export const PlaceCharacterModel = db.getConnection().define("PlaceCharacter", {
             model: CharacterModel,
             key: "id"
         }
-    }
+    }*/
 }, { tableName: "place_character"});
+
+PlaceModel.belongsToMany(CharacterModel, { through: 'PlaceCharacter', foreignKey: "place_id" });
+CharacterModel.belongsToMany(PlaceModel, { through: 'PlaceCharacter', foreignKey: "character_id" });

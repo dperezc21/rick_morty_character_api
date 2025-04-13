@@ -15,6 +15,9 @@ export const resolvers = {
         },
         name: async(root, {name}) => {
             return characterController.getAllCharacters(name, "name")
+        },
+        origin: async(root, {originName}) => {
+            return characterController.getAllCharactersByOrigin(originName, "origin")
         }
     },
 };

@@ -17,7 +17,6 @@ const CharacterType: string = `
         gender: String
         image: String
         created: String
-        episode: [Episode]
     }
 `;
 
@@ -37,6 +36,7 @@ const Queries: string = `
         species(specie: String!): [Character]
         gender(gender: String!): [Character]
         name(name: String!): [Character]
+        origin(originName: String!): [Character]
     }
 `;
 

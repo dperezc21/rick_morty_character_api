@@ -1,7 +1,12 @@
-import {defaultCharacterQuery, queryToFilterCharacters} from "../constants/rickandmortyapi-queries";
+import {
+    defaultCharacterQuery,
+    queryToFilterCharacters,
+    queryToFilterLocations
+} from "../constants/rickandmortyapi-queries";
 import {CacheRepository, NodeCacheService} from "./node-cache.service";
-import {CharacterResponse} from "../interfaces/character-response";
+import {CharacterResponse, OriginResponse} from "../interfaces/character-response";
 import {Character} from "../interfaces/character.interface";
+import {Origin} from "../interfaces/origin.interface";
 
 const cacheService: CacheRepository<any> = new NodeCacheService();
 
@@ -29,6 +34,13 @@ export class RickMortyGraphqlService {
         }).then(value => value.json()).then(value1 => value1["data"]["characters"]);
     }
 
+    async getLocationsFiltered(value: string, key: string, page: number = 1): Promise<OriginResponse> {
+        return await fetch(`${this.url}?query=${queryToFilterLocations(value, key, page)}`, {
+            method: "GET",
+            headers: this.headers(),
+        }).then(value => value.json()).then(value1 => value1["data"]["locations"]);
+    }
+
     async getAllCharacterByFilter(value: string, key: string): Promise<Character[]> {
         try {
             let characters: Character[] = [];
@@ -46,6 +58,31 @@ export class RickMortyGraphqlService {
             }
             if(characters?.length) cacheService.setValue(value, characters);
             return characters;
+        } catch (error) {
+            console.log("error", error)
+        }
+        return [];
+    }
+
+    async getAllCharacterByOriginName(value: string, key: string): Promise<Character[]> {
+        try {
+            let characters: Origin[] = [];
+            const originResponse: OriginResponse = await this.getLocationsFiltered(value, key);
+            characters = originResponse.results;
+            if(!characters?.length) return [];
+            if(!originResponse?.info?.pages) {
+                cacheService.setValue(value, characters);
+                return characters.map(value1 => value1["residents"]);
+            }
+
+            for (let page: number = 2; page <= originResponse.info.pages; page++) {
+                const characterNext: OriginResponse = await this.getLocationsFiltered(value, key, page);
+                if (characterNext?.results?.length) characterNext?.results.forEach((value1: Origin) => {
+                    value1["residents"].forEach(value2 => characters.push(value2));
+                });
+            }
+            if(characters?.length) cacheService.setValue(value, characters);
+            return characters.map((value1: Origin) => value1["residents"]);
         } catch (error) {
             console.log("error", error)
         }
