@@ -61,11 +61,11 @@ export class CharacterOrigin implements CharacterStrategy {
     async getCharacters(name: string): Promise<Character[]> {
         return new Promise(async(resolve) => {
             const originsFound: Origin[] = await originService.getOriginsByName(name);
-            const characters: any[] = originsFound.flatMap(value => value["Characters"])
-            const c: Character[] = characters.map(value => value.dataValues);
-            if(c?.length) {
-                cacheService.setValue(name, c);
-                resolve(c);
+            const characterFromOriginsFound: any[] = originsFound.flatMap(value => value["Characters"])
+            const charactersResult: Character[] = characterFromOriginsFound.map(value => value.dataValues);
+            if(charactersResult?.length) {
+                cacheService.setValue(name, charactersResult);
+                resolve(charactersResult);
             } else resolve([]);
         })
     }
