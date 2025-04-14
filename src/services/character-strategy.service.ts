@@ -71,10 +71,10 @@ export class CharacterOrigin implements CharacterStrategy {
     }
 }
 
-export const CHOICE_BY_FILTER = {
-    "status": new CharacterStatus,
-    "species": new CharacterSpecie,
-    "name": new CharacterName,
-    "gender": new CharacterGender,
-    "origin": new CharacterOrigin,
-}
+export const CHARACTER_STRATEGY_CONTEXT: Map<string, CharacterStrategy> = new Map([
+    ["status", new CharacterStatus],
+    ["species", new CharacterSpecie],
+    ["name", new CharacterName],
+    ["gender", new CharacterGender],
+    ["origin", new CharacterOrigin]
+])
