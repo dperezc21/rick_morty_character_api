@@ -34,8 +34,9 @@ export class RickMortyApiController {
 
     async getAllCharacterByOriginName(value: string): Promise<Character[]> {
         try {
+            const QUERY_KEY_NAME: string = "name";
             let characters: Character[] = [];
-            const originResponse: OriginResponse = await rickMortyService.getLocationsFiltered(value, "name");
+            const originResponse: OriginResponse = await rickMortyService.getLocationsFiltered(value, QUERY_KEY_NAME);
             characters = originResponse?.results?.flatMap(value1 => value1["residents"]) ?? [];
             if(!originResponse?.info?.pages || originResponse.info?.pages == 1) {
                 cacheService.setValue(value, characters);
@@ -43,7 +44,7 @@ export class RickMortyApiController {
             }
 
             for (let page: number = 2; page <= originResponse.info.pages; page++) {
-                const characterNext: OriginResponse = await rickMortyService.getLocationsFiltered(value, "name", page);
+                const characterNext: OriginResponse = await rickMortyService.getLocationsFiltered(value, QUERY_KEY_NAME, page);
                 if (characterNext?.results?.length) {
                     const residentCharacters: Character[] = characterNext.results?.flatMap((origin: Origin) => origin["residents"]);
                     residentCharacters.forEach((value1: Character) => characters.push(value1));
