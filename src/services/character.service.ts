@@ -1,11 +1,12 @@
 import {CharacterModel} from "../models/character.model";
 import {Character} from "../interfaces/character.interface";
+import {Op} from "sequelize";
 
 export class CharacterService {
 
     async getCharacterByName(name: string): Promise<Character[]> {
         return await CharacterModel.findAll(
-            { where: { name } })
+            { where: { name: {[Op.like]: `%${name}%` }} })
             .then(modelValue => modelValue.map(model => model.dataValues));
     }
 
